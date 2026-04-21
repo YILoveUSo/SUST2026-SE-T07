@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PERT 项目进度分析实验系统</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <p class="eyebrow">Software Engineering Lab 5</p>
+      <h1>基于 PERT 的项目进度分析与排班系统</h1>
+      <p class="hero-copy">
+        输入任务、三点估计工期和依赖关系，系统会自动计算期望工期、关键路径、项目总工期、总时差、最少人数和任务分配安排表。
+      </p>
+      <div class="formula-card">
+        <span>PERT 期望工期公式</span>
+        <strong>TE = (O + 4M + P) / 6</strong>
+      </div>
+    </section>
+
+    <section class="panel input-panel">
+      <div class="panel-header">
+        <div>
+          <h2>任务输入</h2>
+          <p>前置任务请填写任务 ID，多个前置任务用英文逗号分隔，例如 <code>A,B,D</code>。</p>
+        </div>
+        <div class="actions">
+          <button type="button" id="add-row-btn" class="secondary-btn">新增一行</button>
+          <button type="button" id="load-sample-btn" class="secondary-btn">加载示例</button>
+          <button type="button" id="import-btn" class="secondary-btn">导入 JSON</button>
+          <button type="button" id="export-btn" class="ghost-btn">导出 JSON</button>
+          <button type="button" id="clear-btn" class="ghost-btn">清空</button>
+          <button type="button" id="calculate-btn" class="primary-btn">开始计算</button>
+        </div>
+      </div>
+
+      <input id="import-file-input" type="file" accept="application/json" hidden>
+
+      <div class="table-frame">
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th>Task ID</th>
+              <th>任务名称</th>
+              <th>O 乐观</th>
+              <th>M 最可能</th>
+              <th>P 悲观</th>
+              <th>前置任务</th>
+              <th class="row-action-col">操作</th>
+            </tr>
+          </thead>
+          <tbody id="task-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="status-grid">
+      <div class="panel status-panel">
+        <div class="panel-header compact">
+          <h2>状态提示</h2>
+        </div>
+        <div id="message-box" class="message-box muted">
+          请输入任务数据，然后点击“开始计算”生成 PERT 分析结果。
+        </div>
+      </div>
+
+      <div class="panel status-panel">
+        <div class="panel-header compact">
+          <h2>项目摘要</h2>
+        </div>
+        <div id="summary-box" class="summary-box empty-state">
+          暂无结果，请先完成一次计算。
+        </div>
+      </div>
+    </section>
+
+    <section class="results-grid">
+      <div class="panel result-panel">
+        <div class="panel-header compact">
+          <h2>任务结果表</h2>
+        </div>
+        <div id="task-results-box" class="result-box empty-state">
+          这里会显示每个任务的期望工期、时差和关键任务标记。
+        </div>
+      </div>
+
+      <div class="panel result-panel">
+        <div class="panel-header compact">
+          <h2>任务分配安排表</h2>
+        </div>
+        <div id="assignment-box" class="result-box empty-state">
+          这里会显示最少人数条件下的人员排班结果。
+        </div>
+      </div>
+    </section>
+
+    <section class="panel gantt-panel">
+      <div class="panel-header compact">
+        <h2>甘特图式时间视图</h2>
+      </div>
+      <div id="gantt-box" class="gantt-box empty-state">
+        完成计算后，这里会展示按人员分组的时间轴视图。
+      </div>
+    </section>
+  </main>
+
+  <template id="task-row-template">
+    <tr>
+      <td><input type="text" name="taskId" maxlength="50" placeholder="例如 A"></td>
+      <td><input type="text" name="taskName" maxlength="120" placeholder="例如 需求分析"></td>
+      <td><input type="number" name="optimistic" min="0" step="any" placeholder="例如 3"></td>
+      <td><input type="number" name="mostLikely" min="0" step="any" placeholder="例如 5"></td>
+      <td><input type="number" name="pessimistic" min="0" step="any" placeholder="例如 8"></td>
+      <td><input type="text" name="predecessors" placeholder="例如 A,B"></td>
+      <td class="row-action-col">
+        <button type="button" class="row-remove-btn" aria-label="删除当前行">删除</button>
+      </td>
+    </tr>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
