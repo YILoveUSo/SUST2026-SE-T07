@@ -692,6 +692,13 @@ function renderAssignments(projectModel) {
           <h3>${escapeHtml(personId)}</h3>
           <div class="table-wrapper">
             <table class="assignment-table">
+              <colgroup>
+                <col class="assignment-col-id">
+                <col class="assignment-col-name">
+                <col class="assignment-col-start">
+                <col class="assignment-col-finish">
+                <col class="assignment-col-note">
+              </colgroup>
               <thead>
                 <tr>
                   <th>任务 ID</th>
